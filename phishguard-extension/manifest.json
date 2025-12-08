@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "PhishBusterz",
+  "version": "1.0",
+  "description": "AI-based phishing detection",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "action": {
+    "default_popup": "src/popup/Popup.html"
+  },
+  "background": {
+    "service_worker": "src/background/index.js"
+  }
+}

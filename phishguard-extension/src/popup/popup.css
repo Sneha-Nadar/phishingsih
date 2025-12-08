@@ -1,0 +1,29 @@
+.popup-root {
+  width: 300px;
+  padding: 15px;
+  background: #0d1117;
+  color: white;
+  font-family: Arial;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 8px;
+  background: #00c853;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.result-box {
+  margin-top: 15px;
+  padding: 10px;
+  background: #1c1f24;
+  border-radius: 8px;
+}
