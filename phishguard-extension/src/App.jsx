@@ -7,14 +7,16 @@ export default function App() {
   const [mode, setMode] = useState("url");
   const [url, setUrl] = useState("");
   const [imageName, setImageName] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [textBody, setTextBody] = useState("");
-  const [result, setResult] = useState(null);
+
+  const [result, setResult] = useState(null);           // Normal scan output
+  const [fullImageResult, setFullImageResult] = useState(null); // Deep scan output
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ------------------------------------------------------
-  // RESULT BUILDER
-  // ------------------------------------------------------
+  // --------------------------- COMMON RESULT BUILDER ---------------------------
   const buildResultFromResponse = (sourceLabel, data) => {
     return {
       score: data.score ?? data.final_risk_score ?? 0,
@@ -24,15 +26,14 @@ export default function App() {
     };
   };
 
-  // ------------------------------------------------------
-  // URL SCAN
-  // ------------------------------------------------------
+  // --------------------------- URL SCAN ---------------------------
   const handleUrlScan = async () => {
     if (!url.trim()) return;
 
     setLoading(true);
     setError("");
     setResult(null);
+    setFullImageResult(null);
 
     try {
       const form = new FormData();
@@ -49,19 +50,17 @@ export default function App() {
       console.error(err);
       setError("Backend unreachable. Start FastAPI server.");
     }
-
     setLoading(false);
   };
 
-  // ------------------------------------------------------
-  // TEXT SCAN
-  // ------------------------------------------------------
+  // --------------------------- TEXT SCAN ---------------------------
   const handleTextScan = async () => {
     if (!textBody.trim()) return;
 
     setLoading(true);
     setError("");
     setResult(null);
+    setFullImageResult(null);
 
     try {
       const form = new FormData();
@@ -78,25 +77,24 @@ export default function App() {
       console.error(err);
       setError("Cannot reach backend.");
     }
-
     setLoading(false);
   };
 
-  // ------------------------------------------------------
-  // IMAGE SCAN
-  // ------------------------------------------------------
-  const handleImageChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  // --------------------------- BASIC IMAGE SCAN ---------------------------
+  const handleImageScan = async () => {
+    if (!selectedFile) {
+      setError("Please upload an image first.");
+      return;
+    }
 
-    setImageName(file.name);
     setLoading(true);
     setError("");
     setResult(null);
+    setFullImageResult(null);
 
     try {
       const form = new FormData();
-      form.append("file", file);
+      form.append("file", selectedFile);
 
       const res = await fetch(`${BACKEND_URL}/analyze/image`, {
         method: "POST",
@@ -113,19 +111,52 @@ export default function App() {
     setLoading(false);
   };
 
-  // Status color
+  // ---------------------- FULL IMAGE (OCR + YOLO + STEGO) ----------------------
+  const handleFullImageScan = async () => {
+    if (!selectedFile) {
+      setError("Upload an image first");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setResult(null);
+    setFullImageResult(null);
+
+    try {
+      const form = new FormData();
+      form.append("file", selectedFile);
+
+      const res = await fetch(`${BACKEND_URL}/analyze/image/full`, {
+        method: "POST",
+        body: form,
+      });
+
+      const data = await res.json();
+
+      setFullImageResult({
+        stego: data?.stego_analysis ?? null,
+        yolo: data?.yolo ?? null,
+        ocr: data?.ocr_text ?? null,
+        mobilenet: data?.mobilenet ?? null,
+      });
+    } catch (err) {
+      console.error(err);
+      setError("Full image scan failed.");
+    }
+
+    setLoading(false);
+  };
+
+  // --------------------------- UI ---------------------------
+
   const activeStatus = result?.status;
-  const scoreClass =
-    activeStatus === "safe" ? "score-safe" : "score-phishing";
+  const scoreClass = activeStatus === "safe" ? "score-safe" : "score-phishing";
 
   return (
     <>
-      {/* BACKGROUND SCROLL TEXT */}
-      <div className="sih-scroll-text">
-        PHISHBUSTERZ • SMART INDIA HACKATHON 2025 • CYBERSECURITY •
-      </div>
-
-      {/* OTHER BACKGROUND LAYERS */}
+      {/* BACKGROUND EFFECTS */}
+      <div className="sih-scroll-text">PHISHBUSTERZ • SMART INDIA HACKATHON 2025 • CYBERSECURITY •</div>
       <div className="india-bg"></div>
       <div className="saffron-glow"></div>
       <div className="green-glow"></div>
@@ -143,112 +174,78 @@ export default function App() {
             <div className="sih-heading-block">
               <p className="sih-tag">SMART INDIA HACKATHON 2025</p>
               <h1 className="sih-title">PhishBusterz</h1>
-              <p className="sih-sub">Image, URL & text based phishing detection system.</p>
+              <p className="sih-sub">Image, URL & Text based phishing detection system.</p>
             </div>
           </header>
 
           {/* MODE SWITCH */}
           <div className="sih-mode-switch">
-            <button
-              className={`sih-mode-btn ${mode === "url" ? "active-mode" : ""}`}
-              onClick={() => {
-                setMode("url");
-                setResult(null);
-              }}
-            >
-              URL Scan
-            </button>
-
-            <button
-              className={`sih-mode-btn ${mode === "image" ? "active-mode" : ""}`}
-              onClick={() => {
-                setMode("image");
-                setResult(null);
-              }}
-            >
-              Image Scan
-            </button>
-
-            <button
-              className={`sih-mode-btn ${mode === "text" ? "active-mode" : ""}`}
-              onClick={() => {
-                setMode("text");
-                setResult(null);
-              }}
-            >
-              Text Scan
+            <button className={`sih-mode-btn ${mode === "url" ? "active-mode" : ""}`} onClick={() => setMode("url")}>URL Scan</button>
+            <button className={`sih-mode-btn ${mode === "image" ? "active-mode" : ""}`} onClick={() => setMode("image")}>Image Scan</button>
+            <button className={`sih-mode-btn ${mode === "text" ? "active-mode" : ""}`} onClick={() => setMode("text")}>Text Scan</button>
+            <button className={`sih-mode-btn ${mode === "deep" ? "active-mode" : ""}`} onClick={() => setMode("deep")}>
+              Deep Stego Scan
             </button>
           </div>
 
-          {/* URL INPUT */}
+          {/* URL INPUT UI */}
           {mode === "url" && (
             <section className="sih-section">
               <h2 className="sih-section-title">Check <span>URL</span></h2>
-
-              <input
-                className="sih-input"
-                placeholder="https://example.com"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-
-              <button className="sih-btn-green full" onClick={handleUrlScan}>
-                Analyze URL
-              </button>
+              <input className="sih-input" placeholder="https://example.com" value={url} onChange={(e) => setUrl(e.target.value)} />
+              <button className="sih-btn-green full" onClick={handleUrlScan}>Analyze URL</button>
             </section>
           )}
 
-          {/* IMAGE INPUT */}
-          {mode === "image" && (
+          {/* IMAGE UPLOAD + SCAN */}
+          {(mode === "image" || mode === "deep") && (
             <section className="sih-section">
-              <h2 className="sih-section-title">Scan <span>Screenshot</span></h2>
+              <h2 className="sih-section-title">Upload <span>Screenshot</span></h2>
 
-              <div
-                className="sih-upload-box"
-                role="button"
-                onClick={() => document.getElementById("sih-image-input").click()}
-              >
-                <p className="sih-upload-main">Click to upload a phishing screenshot</p>
-                <p className="sih-upload-sub">PNG / JPG • Login pages • Fake emails</p>
+              <div className="sih-upload-box" onClick={() => document.getElementById("upload-img").click()}>
+                <p className="sih-upload-main">Upload suspicious screenshot</p>
+                <p className="sih-upload-sub">PNG / JPG • Fake Login Pages • Emails</p>
                 {imageName && <p className="sih-file-name">{imageName}</p>}
               </div>
 
               <input
-                id="sih-image-input"
+                id="upload-img"
                 type="file"
                 accept="image/*"
                 style={{ display: "none" }}
-                onChange={handleImageChange}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setSelectedFile(file);
+                  setImageName(file?.name || "");
+                }}
               />
+            <br/>
+              {mode === "image" && (
+                <button className={`sih-mode-btn scan-btn ${mode === "image" ? "active-mode" : ""}`} onClick={handleImageScan}>
+                  Image Scan
+                </button>
+              )}
+              {mode === "deep" && (
+                <button className={`sih-mode-btn scan-btn ${mode === "image" ? "active-mode" : ""}`} onClick={handleFullImageScan}>
+                  Stego Scan
+                </button>
+              )}
             </section>
           )}
 
-          {/* TEXT INPUT */}
+          {/* TEXT SCAN */}
           {mode === "text" && (
             <section className="sih-section">
               <h2 className="sih-section-title">Scan <span>Text / Email</span></h2>
-
-              <textarea
-                className="sih-textarea"
-                placeholder="Paste email body, SMS, WhatsApp message..."
-                value={textBody}
-                onChange={(e) => setTextBody(e.target.value)}
-                rows={4}
-              />
-
-              <button className="sih-btn-green full" onClick={handleTextScan}>
-                Analyze Text
-              </button>
+              <textarea className="sih-textarea" placeholder="Paste email body or message..." rows={4}
+                value={textBody} onChange={(e) => setTextBody(e.target.value)} />
+              <button className="sih-btn-green full" onClick={handleTextScan}>Analyze Text</button>
             </section>
           )}
 
-          {/* RESULTS */}
+          {/* RESULTS AREA */}
           <section className="sih-result-area">
-            {error && (
-              <div className="sih-result-box" style={{ color: "red" }}>
-                {error}
-              </div>
-            )}
+            {error && <div className="sih-result-box" style={{ color: "red" }}>{error}</div>}
 
             {loading && (
               <div className="sih-result-box">
@@ -257,19 +254,11 @@ export default function App() {
               </div>
             )}
 
+            {/* Normal phishing result */}
             {!loading && result && (
               <div className="sih-result-box">
-                <h3 className="result-title">
-                  {result.source} • {result.status === "safe" ? "Legitimate" : "Phishing Likely"}
-                </h3>
-
-                <div
-                  className={`score-circle ${scoreClass} mb-3`}
-                  style={{ "--score": result.score }}
-                >
-                  <span>{result.score}</span>
-                </div>
-
+                <h3 className="result-title">{result.source} </h3>
+              <h2>{result.status === "safe" ? "Legitimate" : "Phishing Likely"}</h2>
                 <p className="result-desc">
                   {result.status === "safe"
                     ? "Looks safe based on current checks."
@@ -277,8 +266,37 @@ export default function App() {
                 </p>
               </div>
             )}
-          </section>
 
+            {/* Deep Scan Result */}
+            {!loading && fullImageResult && (
+              <div className="sih-result-box deep-panel">
+
+                {fullImageResult.stego && (
+                  <div className="deep-block">
+                    <h4>🕵️ Steganography Detection</h4>
+                    <p><b>Entropy:</b> {fullImageResult.stego.entropy}</p>
+                    <p><b>LSB Prop Diff:</b> {fullImageResult.stego.lsb_prop_diff}</p>
+                    <p><b>Chi-Square:</b> {fullImageResult.stego.chi_square}</p>
+                    <p><b>Hidden Data Found:</b> {fullImageResult.stego.stego_detected ? "YES" : "NO"}</p>
+                  </div>
+                )}
+
+                {fullImageResult.ocr && (
+                  <div className="deep-block">
+                    <h4>📝 Extracted OCR Text</h4>
+                    <p>{fullImageResult.ocr}</p>
+                  </div>
+                )}
+
+                {fullImageResult.yolo && (
+                  <div className="deep-block">
+                    <h4>🎯 UI Component Detection</h4>
+                    <pre>{JSON.stringify(fullImageResult.yolo, null, 2)}</pre>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
         </div>
       </div>
     </>
