@@ -13,7 +13,7 @@ export default function Login({ onRegister }) {
       {/* Login Card */}
       <div className="sih-login-card">
         <h2 className="login-title">Welcome Back 👋</h2>
-        <p className="login-sub">Login to continue your SIH journey</p>
+        <p className="login-sub">Login to continue</p>
 
         {/* Email */}
         <label className="login-label">Email ID</label>
