@@ -2,3 +2,4 @@
 *.msi
 node_modules/
 .env
+*.zip
