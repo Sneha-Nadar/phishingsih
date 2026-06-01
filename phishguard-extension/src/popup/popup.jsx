@@ -14,7 +14,7 @@ export default function Popup() {
 
   return (
     <div className="popup-root">
-      <h2>PhishBusterz</h2>
+      <h2>Phish Busterz</h2>
 
       <input
         type="text"

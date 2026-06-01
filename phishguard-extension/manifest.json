@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "PhishBusterz",
+  "name": "Phish Busterz",
   "version": "1.0",
   "description": "AI-based phishing detection",
   "permissions": ["storage", "activeTab", "scripting"],

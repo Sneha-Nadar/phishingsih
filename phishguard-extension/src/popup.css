@@ -142,7 +142,7 @@ body {
 
 /* Override content correctly */
 .sih-scroll-text::before {
-  content: "PHISHBUSTERZ • SMART INDIA HACKATHON 2025 • CYBERSECURITY • PHISHING DEFENSE • ";
+  content: "PHISH BUSTERZ • SMART INDIA HACKATHON 2025 • CYBERSECURITY • PHISHING DEFENSE • ";
   display: inline-block;
   animation: marquee 18s linear infinite;
 }

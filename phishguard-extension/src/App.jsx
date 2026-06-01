@@ -156,7 +156,7 @@ export default function App() {
   return (
     <>
       {/* BACKGROUND EFFECTS */}
-      <div className="sih-scroll-text">CYBERSHIELD • THE NEURAL NEXUS HACKATHON 2026 • CYBERSECURITY •</div>
+      <div className="sih-scroll-text">PHISH BUSTERZ • SMART INDIA HACKATHON 2025 • CYBERSECURITY •</div>
       <div className="india-bg"></div>
       <div className="saffron-glow"></div>
       <div className="green-glow"></div>
@@ -172,8 +172,8 @@ export default function App() {
           <header className="sih-header">
             <div className="sih-logo-circle">PB</div>
             <div className="sih-heading-block">
-              <p className="sih-tag">THE NEURAL NEXUS HACKATHON 2026</p>
-              <h1 className="sih-title">CyberShield</h1>
+              <p className="sih-tag">Smart India Hackathon 2025</p>
+              <h1 className="sih-title">Phish Busterz</h1>
               <p className="sih-sub">Image, URL & Text based phishing detection system.</p>
             </div>
           </header>
