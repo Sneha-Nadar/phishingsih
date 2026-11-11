@@ -1,4 +1,4 @@
-# PhishBusterz 🛡️
+# PhishBusterz 👾
 ### *Multimodal AI-Powered Phishing & Threat Detection System*
 
 [![SIH 2025](https://img.shields.io/badge/SIH%202025-ID%3A%20SIH25159-FF9933?style=for-the-badge)](https://www.sih.gov.in/)
