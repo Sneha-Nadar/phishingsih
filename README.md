@@ -302,19 +302,17 @@ Executes deep multimodal diagnostic (MobileNetV3 + OCR + YOLOv8 + Steganography)
 
 ## 09. Team & Contributions
 
-PhishBusterz was developed by a six-member team led by **Sidra**, with contributions from **Samuel Michael Alva, Pratiksha, Sonia, Vasanth, and Sneha**, as part of **Smart India Hackathon (SIH) 2025**.
+PhishBusterz was developed by a six-member team led by **Sidra**, with contributions from **Samuel, Pratiksha, Sonia, Vasanth, and Sneha**, as part of **Smart India Hackathon (SIH) 2025**.
 
 ### **Core Team**
 * **Sidra** — *Team Lead & Architecture*
-* **Samuel Michael Alva** — *Dataset Research, Collection & Preparation; Frontend & Extension Engineering*
+* **Samuel** — *Dataset Research, Collection & Preparation; Frontend & Extension Engineering*
 * **Pratiksha** — *ML Research & Quality Assurance*
 * **Sonia** — *Cybersecurity Threat Analysis & Research*
 * **Vasanth** — *Testing & System Integration*
 * **Sneha** — *ML Pipeline & Repository Management*
 
-### **Samuel's Key Contributions:**
-* **Dataset Engineering:** End-to-end research, collection, curation, and preprocessing of real-world phishing and legitimate login datasets used for training and benchmarking.
-* **Frontend & Chrome Extension:** Built the interactive React 19 interface, Vite build pipeline, and Manifest V3 extension packaging, connecting all asynchronous API endpoints to a responsive cyberpunk-themed UI.
+
 
 ---
 
