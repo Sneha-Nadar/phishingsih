@@ -12,7 +12,7 @@
 
 ---
 
-## ⚡ 60-Second Recruiter Summary
+## ⚡ 60-Second Summary
 > **PhishBusterz** is an end-to-end, multimodal cybersecurity solution engineered for **Smart India Hackathon (SIH 2025)** under **AICTE** (Problem Statement ID: **SIH25159**).  
 > Unlike traditional blacklist- or regex-based detectors, PhishBusterz unifies **Natural Language Processing (Transformers/BERT)**, **Computer Vision (MobileNetV3 + YOLOv8)**, **Optical Character Recognition (Tesseract)**, and **Statistical Image Forensics (Steganography Detection)** to intercept zero-day phishing attacks across text, URLs, login screenshots, and weaponized images in real time via a lightweight browser extension.
 
@@ -68,6 +68,11 @@ Phishing attacks have evolved far beyond standard typosquatting domains. Modern 
 ---
 
 ## 03. System Architecture
+
+<div align="center">
+  <img src="phishguard-extension/flowchart.png" alt="PhishBusterz Architecture Flowchart" width="600" />
+  <p><i>Figure 1: Official System Flowchart & High-Level Architecture Pipeline</i></p>
+</div>
 
 ```mermaid
 flowchart TD
@@ -156,13 +161,15 @@ Analyzes image pixel matrices for hidden payloads without needing prior knowledg
 
 ## 06. Application Screenshots
 
-| System Flowchart / Architecture | Email Threat Analysis |
+| 01. Extension Overview & Mode Selector | 02. Real-Time URL Phishing Detection |
 | :---: | :---: |
-| ![Architecture](phishguard-extension/flowchart.png) | ![Email Scan](phishguard-extension/gmail.png) |
+| <img src="docs/images/card_01_extension_overview.png" width="360" alt="Extension Overview" /> | <img src="docs/images/card_02_url_detection_result.png" width="360" alt="URL Detection Result" /> |
+| *Active popup with SIH 2025 theme & mode switcher* | *Live BERT inference flagging zero-day phishing URL* |
 
-| Chrome Extension UI | Legitimate vs. Phishing Benchmark |
+| 03. Email Threat & Urgency NLP Scanner | 04. Deep Stego Screenshot Inspection |
 | :---: | :---: |
-| ![Extension UI](phishguard-extension/bg.png) | ![Legitimate Page](phishguard-extension/legitimateImage.jpg) |
+| <img src="docs/images/card_03_email_threat_result.png" width="360" alt="Email Threat Result" /> | <img src="docs/images/card_04_stego_scan_interface.png" width="360" alt="Stego Scan Interface" /> |
+| *Live NLP analysis detecting credential harvesting bait* | *Deep diagnostic upload zone for image & payload forensics* |
 
 ---
 
