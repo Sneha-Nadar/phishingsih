@@ -302,15 +302,15 @@ Executes deep multimodal diagnostic (MobileNetV3 + OCR + YOLOv8 + Steganography)
 
 ## 09. Team & Contributions
 
-PhishBusterz was developed by a six-member team led by **Sidra**, with contributions from **Samuel, Pratiksha, Sonia, Vasanth, and Sneha**, as part of **Smart India Hackathon (SIH) 2025**.
+PhishBusterz was developed by a six-member team led by **Sidra**, with contributions from **Samuel, Sonia, Sneha, Pratiksha and Vasanth**, as part of **Smart India Hackathon (SIH) 2025**.
 
 ### **Core Team**
 * **Sidra** — *Team Lead & Architecture*
 * **Samuel** — *Dataset Research, Collection & Preparation; Frontend & Extension Engineering*
-* **Pratiksha** — *ML Research & Quality Assurance*
 * **Sonia** — *Cybersecurity Threat Analysis & Research*
-* **Vasanth** — *Testing & System Integration*
 * **Sneha** — *ML Pipeline & Repository Management*
+* **Pratiksha** — *ML Research & Quality Assurance*
+* **Vasanth** — *Testing & System Integration*
 
 
 
